@@ -1,98 +1,521 @@
-<script>
-const cards = document.querySelectorAll(".lesson-card");
-const modal = document.getElementById("videoBox");
-const frame = document.getElementById("videoFrame");
-const searchInput = document.getElementById("searchInput");
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-let favorites =
-  JSON.parse(localStorage.getItem("favorites")) || {};
+<title>Whip Lessons</title>
 
-/* OPEN VIDEO */
-cards.forEach(card => {
-  card.addEventListener("click", (e) => {
+<style>
 
-    /* IGNORE STAR CLICK */
-    if (e.target.classList.contains("fav")) return;
-
-    const videoId = card.dataset.video;
-
-    frame.src =
-      `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-
-    modal.style.display = "flex";
-  });
-});
-
-/* CLOSE VIDEO */
-function closeVideo() {
-  modal.style.display = "none";
-  frame.src = "";
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
 }
 
-/* CLOSE WHEN CLICKING OUTSIDE */
-modal.addEventListener("click", (e) => {
-  if (e.target === modal) {
-    closeVideo();
+body{
+  font-family:Arial, sans-serif;
+  background:#f4f4f4;
+  color:#222;
+}
+
+/* HEADER */
+
+header{
+  background:#111;
+  color:white;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px 40px;
+}
+
+.logo{
+  font-size:28px;
+  font-weight:bold;
+}
+
+nav{
+  display:flex;
+  gap:20px;
+}
+
+nav a{
+  color:white;
+  text-decoration:none;
+  transition:.3s;
+}
+
+nav a:hover{
+  color:gold;
+}
+
+/* TITLE */
+
+.page-title{
+  text-align:center;
+  padding:35px 20px 15px;
+  font-size:42px;
+}
+
+/* SEARCH */
+
+.controls{
+  display:flex;
+  justify-content:center;
+  padding:10px 20px 30px;
+}
+
+.controls input{
+  width:100%;
+  max-width:450px;
+  padding:14px;
+  border-radius:10px;
+  border:1px solid #ccc;
+  font-size:16px;
+}
+
+.controls input:focus{
+  outline:none;
+  border-color:#555;
+  box-shadow:0 0 10px rgba(0,0,0,0.15);
+}
+
+/* GRID */
+
+.lesson-grid{
+  display:grid;
+  grid-template-columns:
+  repeat(auto-fit,minmax(240px,1fr));
+
+  gap:30px;
+  padding:0 40px 50px;
+}
+
+/* CARD */
+
+.lesson-card{
+  position:relative;
+  background:white;
+  border-radius:14px;
+  overflow:hidden;
+  cursor:pointer;
+
+  box-shadow:
+  0 5px 15px rgba(0,0,0,0.1);
+
+  transition:.3s;
+}
+
+.lesson-card:hover{
+  transform:translateY(-6px);
+}
+
+.lesson-card img{
+  width:100%;
+  aspect-ratio:1/1;
+  object-fit:cover;
+  display:block;
+}
+
+.lesson-card h3{
+  text-align:center;
+  padding:16px;
+  font-size:18px;
+}
+
+/* FAVORITE */
+
+.fav{
+  position:absolute;
+  top:10px;
+  right:10px;
+
+  width:35px;
+  height:35px;
+
+  border-radius:50%;
+  background:rgba(0,0,0,0.6);
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  color:white;
+  font-size:20px;
+
+  transition:.3s;
+}
+
+.fav:hover{
+  background:black;
+}
+
+.fav.active{
+  color:gold;
+}
+
+/* MODAL */
+
+.video-box{
+  position:fixed;
+  inset:0;
+
+  display:none;
+  justify-content:center;
+  align-items:center;
+
+  background:rgba(0,0,0,0.85);
+
+  z-index:999;
+}
+
+.video-content{
+  position:relative;
+
+  width:90%;
+  max-width:850px;
+
+  aspect-ratio:16/9;
+
+  background:black;
+  border-radius:12px;
+
+  overflow:hidden;
+}
+
+.video-content iframe{
+  width:100%;
+  height:100%;
+}
+
+/* CLOSE BUTTON */
+
+.close{
+  position:absolute;
+  top:10px;
+  right:15px;
+
+  color:white;
+  font-size:28px;
+
+  cursor:pointer;
+  z-index:10;
+}
+
+.close:hover{
+  color:red;
+}
+
+/* MOBILE */
+
+@media(max-width:700px){
+
+  header{
+    flex-direction:column;
+    gap:15px;
   }
+
+  .page-title{
+    font-size:32px;
+  }
+
+  .lesson-grid{
+    padding:0 20px 40px;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<header>
+
+  <div class="logo">Whip</div>
+
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">Lessons</a>
+  </nav>
+
+</header>
+
+<!-- TITLE -->
+
+<h1 class="page-title">
+  Guitar Lessons
+</h1>
+
+<!-- SEARCH -->
+
+<div class="controls">
+
+  <input
+    type="text"
+    id="searchInput"
+    placeholder="Search lessons..."
+  >
+
+</div>
+
+<!-- GRID -->
+
+<div class="lesson-grid">
+
+  <!-- CARD 1 -->
+
+  <div
+    class="lesson-card"
+    data-video="LbMzStHsw3w"
+    data-id="nirvana"
+  >
+
+    <div class="fav">☆</div>
+
+    <img
+      src="https://upload.wikimedia.org/wikipedia/en/b/b7/NirvanaNevermindalbumcover.jpg"
+      alt="Nirvana"
+    >
+
+    <h3>Smells Like Teen Spirit</h3>
+
+  </div>
+
+  <!-- CARD 2 -->
+
+  <div
+    class="lesson-card"
+    data-video="o8wM8inaqmo"
+    data-id="wonderwall"
+  >
+
+    <div class="fav">☆</div>
+
+    <img
+      src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=800&q=80"
+      alt="Wonderwall"
+    >
+
+    <h3>Wonderwall</h3>
+
+  </div>
+
+  <!-- CARD 3 -->
+
+  <div
+    class="lesson-card"
+    data-video="BBz-Jyr23M4"
+    data-id="chords"
+  >
+
+    <div class="fav">☆</div>
+
+    <img
+      src="https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&w=800&q=80"
+      alt="Basic Chords"
+    >
+
+    <h3>Basic Chords</h3>
+
+  </div>
+
+</div>
+
+<!-- VIDEO MODAL -->
+
+<div id="videoBox" class="video-box">
+
+  <div class="video-content">
+
+    <span class="close">
+      ✖
+    </span>
+
+    <iframe
+      id="videoFrame"
+      src=""
+      frameborder="0"
+      allow="
+      accelerometer;
+      autoplay;
+      clipboard-write;
+      encrypted-media;
+      gyroscope;
+      picture-in-picture"
+      allowfullscreen>
+    </iframe>
+
+  </div>
+
+</div>
+
+<script>
+
+/* ELEMENTS */
+
+const cards =
+document.querySelectorAll(".lesson-card");
+
+const modal =
+document.getElementById("videoBox");
+
+const frame =
+document.getElementById("videoFrame");
+
+const closeBtn =
+document.querySelector(".close");
+
+const searchInput =
+document.getElementById("searchInput");
+
+/* FAVORITES */
+
+let favorites =
+JSON.parse(
+localStorage.getItem("favorites")
+) || {};
+
+/* OPEN VIDEO */
+
+cards.forEach(card => {
+
+  card.addEventListener("click", e => {
+
+    if(
+      e.target.classList.contains("fav")
+    ) return;
+
+    const videoId =
+    card.dataset.video;
+
+    frame.src =
+    `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+
+    modal.style.display = "flex";
+
+  });
+
 });
 
-/* ESC KEY CLOSE */
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") {
+/* CLOSE FUNCTION */
+
+function closeVideo(){
+
+  modal.style.display = "none";
+
+  frame.src = "";
+
+}
+
+/* CLOSE BUTTON */
+
+closeBtn.addEventListener(
+"click",
+closeVideo
+);
+
+/* CLICK OUTSIDE */
+
+modal.addEventListener("click", e => {
+
+  if(e.target === modal){
     closeVideo();
   }
+
+});
+
+/* ESC KEY */
+
+document.addEventListener(
+"keydown",
+e => {
+
+  if(e.key === "Escape"){
+    closeVideo();
+  }
+
 });
 
 /* FAVORITES */
-document.querySelectorAll(".fav").forEach(fav => {
 
-  const card = fav.parentElement;
-  const id = card.dataset.id;
+document.querySelectorAll(".fav")
+.forEach(fav => {
 
-  /* LOAD SAVED FAVORITES */
-  if (favorites[id]) {
+  const card =
+  fav.parentElement;
+
+  const id =
+  card.dataset.id;
+
+  /* LOAD SAVED */
+
+  if(favorites[id]){
+
     fav.classList.add("active");
     fav.textContent = "★";
+
   }
 
-  fav.addEventListener("click", (e) => {
+  /* TOGGLE */
 
-    /* STOP CARD CLICK */
+  fav.addEventListener("click", e => {
+
     e.stopPropagation();
 
     favorites[id] = !favorites[id];
 
-    if (favorites[id]) {
+    if(favorites[id]){
+
       fav.classList.add("active");
       fav.textContent = "★";
-    } else {
+
+    }else{
+
       fav.classList.remove("active");
       fav.textContent = "☆";
+
     }
 
     localStorage.setItem(
       "favorites",
       JSON.stringify(favorites)
     );
+
   });
+
 });
 
 /* SEARCH */
-searchInput.addEventListener("input", () => {
+
+searchInput.addEventListener(
+"input",
+() => {
 
   const value =
-    searchInput.value.toLowerCase();
+  searchInput.value.toLowerCase();
 
   cards.forEach(card => {
 
     const text =
-      card.querySelector("h3")
-      .innerText
-      .toLowerCase();
+    card.querySelector("h3")
+    .innerText
+    .toLowerCase();
 
-    /* KEEP GRID LAYOUT */
     card.style.display =
-      text.includes(value) ? "" : "none";
+    text.includes(value)
+    ? ""
+    : "none";
+
   });
+
 });
+
 </script>
+
+</body>
+</html>
