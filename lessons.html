@@ -1,226 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Whip Lessons</title>
-
-<style>
-  body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f5f5f5;
-  }
-
-  header {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px 40px;
-    background: #111;
-    color: white;
-  }
-
-  nav a {
-    color: white;
-    margin-left: 15px;
-    text-decoration: none;
-  }
-
-  .page-title {
-    text-align: center;
-    padding: 30px 20px 10px;
-    font-size: 42px;
-  }
-
-  .controls {
-    display: flex;
-    justify-content: center;
-    padding: 10px;
-  }
-
-  .controls input {
-    width: 60%;
-    max-width: 400px;
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-  }
-
-  .lesson-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 25px;
-    padding: 40px;
-  }
-
-  .lesson-card {
-    position: relative;
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    cursor: pointer;
-    transition: 0.3s;
-  }
-
-  .lesson-card:hover {
-    transform: translateY(-6px);
-  }
-
-  .lesson-card img {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-    display: block;
-  }
-
-  .lesson-card h3 {
-    margin: 0;
-    padding: 12px;
-    font-size: 16px;
-    text-align: center;
-  }
-
-  .fav {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    font-size: 20px;
-    cursor: pointer;
-    color: white;
-    text-shadow: 0 0 5px black;
-  }
-
-  .fav.active {
-    color: gold;
-  }
-
-  .video-box {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.85);
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-  }
-
-  .video-content {
-    position: relative;
-    width: 90%;
-    max-width: 750px;
-    aspect-ratio: 16 / 9;
-    background: #000;
-    border-radius: 10px;
-    overflow: hidden;
-  }
-
-  iframe {
-    width: 100%;
-    height: 100%;
-  }
-
-  .close {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 24px;
-    color: white;
-    cursor: pointer;
-  }
-</style>
-</head>
-
-<body>
-
-<header>
-  <div class="logo">Whip</div>
-  <nav>
-    <a href="#">Home</a>
-    <a href="#">Lessons</a>
-  </nav>
-</header>
-
-<h1 class="page-title">Lessons</h1>
-
-<div class="controls">
-  <input id="searchInput" type="text" placeholder="Search lessons...">
-</div>
-
-<div class="lesson-grid">
-
-  <!-- Nirvana (UPDATED) -->
-  <div class="lesson-card" data-video="LbMzStHsw3w" data-id="nirvana">
-    <div class="fav">☆</div>
-    <img src="https://upload.wikimedia.org/wikipedia/en/b/b7/NirvanaNevermindalbumcover.jpg">
-    <h3>Smells Like Teen Spirit</h3>
-  </div>
-
-  <!-- Wonderwall (UPDATED) -->
-  <div class="lesson-card" data-video="o8wM8inaqmo" data-id="wonderwall">
-    <div class="fav">☆</div>
-    <img src="images/wonderwall.jpg">
-    <h3>Wonderwall</h3>
-  </div>
-
-  <!-- Basic Chords -->
-  <div class="lesson-card" data-video="BBz-Jyr23M4" data-id="chords">
-    <div class="fav">☆</div>
-    <img src="https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&w=800&q=80">
-    <h3>Basic Chords</h3>
-  </div>
-
-</div>
-
-<!-- VIDEO MODAL -->
-<div id="videoBox" class="video-box">
-  <div class="video-content">
-    <span class="close" onclick="closeVideo()">✖</span>
-
-    <iframe id="videoFrame"
-      src=""
-      frameborder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowfullscreen>
-    </iframe>
-  </div>
-</div>
-
 <script>
 const cards = document.querySelectorAll(".lesson-card");
 const modal = document.getElementById("videoBox");
 const frame = document.getElementById("videoFrame");
 const searchInput = document.getElementById("searchInput");
 
-let favorites = JSON.parse(localStorage.getItem("favorites")) || {};
+let favorites =
+  JSON.parse(localStorage.getItem("favorites")) || {};
 
 /* OPEN VIDEO */
 cards.forEach(card => {
   card.addEventListener("click", (e) => {
+
+    /* IGNORE STAR CLICK */
     if (e.target.classList.contains("fav")) return;
 
-    frame.src = "https://www.youtube.com/embed/" + card.dataset.video + "?autoplay=1";
+    const videoId = card.dataset.video;
+
+    frame.src =
+      `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+
     modal.style.display = "flex";
   });
 });
 
-/* CLOSE */
+/* CLOSE VIDEO */
 function closeVideo() {
   modal.style.display = "none";
   frame.src = "";
 }
 
+/* CLOSE WHEN CLICKING OUTSIDE */
+modal.addEventListener("click", (e) => {
+  if (e.target === modal) {
+    closeVideo();
+  }
+});
+
+/* ESC KEY CLOSE */
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    closeVideo();
+  }
+});
+
 /* FAVORITES */
 document.querySelectorAll(".fav").forEach(fav => {
+
   const card = fav.parentElement;
   const id = card.dataset.id;
 
+  /* LOAD SAVED FAVORITES */
   if (favorites[id]) {
     fav.classList.add("active");
     fav.textContent = "★";
   }
 
-  fav.addEventListener("click", () => {
+  fav.addEventListener("click", (e) => {
+
+    /* STOP CARD CLICK */
+    e.stopPropagation();
+
     favorites[id] = !favorites[id];
 
     if (favorites[id]) {
@@ -231,20 +70,29 @@ document.querySelectorAll(".fav").forEach(fav => {
       fav.textContent = "☆";
     }
 
-    localStorage.setItem("favorites", JSON.stringify(favorites));
+    localStorage.setItem(
+      "favorites",
+      JSON.stringify(favorites)
+    );
   });
 });
 
 /* SEARCH */
 searchInput.addEventListener("input", () => {
-  const value = searchInput.value.toLowerCase();
+
+  const value =
+    searchInput.value.toLowerCase();
 
   cards.forEach(card => {
-    const text = card.querySelector("h3").innerText.toLowerCase();
-    card.style.display = text.includes(value) ? "block" : "none";
+
+    const text =
+      card.querySelector("h3")
+      .innerText
+      .toLowerCase();
+
+    /* KEEP GRID LAYOUT */
+    card.style.display =
+      text.includes(value) ? "" : "none";
   });
 });
 </script>
-
-</body>
-</html>
