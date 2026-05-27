@@ -1,1 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lessons - Music Tutorials Hub</title>
 
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    .page-title {
+      text-align: center;
+      padding: 60px 20px 20px;
+      font-size: 42px;
+    }
+
+    .lesson-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 30px;
+      padding: 50px;
+    }
+
+    .lesson-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: 0.3s;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .lesson-card:hover {
+      transform: translateY(-8px);
+    }
+
+    .lesson-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+    }
+
+    .lesson-card h3 {
+      padding: 15px;
+      font-size: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="logo">Music Tutorials Hub</div>
+
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="lessons.html">Lessons</a>
+    </nav>
+  </header>
+
+  <h1 class="page-title">Lessons</h1>
+
+  <section class="lesson-grid">
+
+    <!-- Nirvana Lesson -->
+    <a class="lesson-card"
+       href="https://www.youtube.com/watch?v=hTWKbfoikeg"
+       target="_blank">
+
+      <img src="https://upload.wikimedia.org/wikipedia/en/b/b7/NirvanaNevermindalbumcover.jpg" 
+           alt="Nirvana Nevermind Album">
+
+      <h3>Smells Like Teen Spirit - Guitar Tutorial</h3>
+    </a>
+
+  </section>
+
+</body>
+</html>
