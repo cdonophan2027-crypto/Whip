@@ -33,33 +33,45 @@
 
   .lesson-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 25px;
     padding: 40px;
   }
 
+  /* ✅ 1:1 SQUARE CARDS */
   .lesson-card {
+    aspect-ratio: 1 / 1;
     background: white;
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     cursor: pointer;
     transition: 0.3s;
+
+    display: flex;
+    flex-direction: column;
   }
 
   .lesson-card:hover {
     transform: translateY(-6px);
   }
 
+  /* image fills top portion but stays square layout */
   .lesson-card img {
     width: 100%;
-    height: 200px;
+    height: 70%;
     object-fit: cover;
   }
 
   .lesson-card h3 {
-    padding: 12px;
-    font-size: 18px;
+    margin: 0;
+    padding: 10px;
+    font-size: 16px;
+    text-align: center;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   /* MODAL */
@@ -114,37 +126,39 @@
 
 <div class="lesson-grid">
 
+  <!-- Nirvana -->
   <div class="lesson-card"
-       data-video="LbMzStHsw3w"
-       data-title="Smells Like Teen Spirit - Nirvana">
+       data-video="hTWKbfoikeg">
     <img src="https://upload.wikimedia.org/wikipedia/en/b/b7/NirvanaNevermindalbumcover.jpg">
     <h3>Smells Like Teen Spirit</h3>
   </div>
 
+  <!-- Wonderwall (NEW COVER) -->
   <div class="lesson-card"
-       data-video="o8wM8inaqmo"
-       data-title="Wonderwall - Oasis Guitar Tutorial">
-    <img src="https://upload.wikimedia.org/wikipedia/en/0/0d/Oasis_-_(What%27s_The_Story)_Morning_Glory_album_cover.jpg">
+       data-video="q9jF1x1yYjg">
+    <img src="https://upload.wikimedia.org/wikipedia/en/0/0d/Oasis_-_%28What%27s_the_Story%29_Morning_Glory_album_cover.jpg">
     <h3>Wonderwall</h3>
   </div>
 
+  <!-- Basic Chords (NEW COVER) -->
   <div class="lesson-card"
-       data-video="dQw4w9WgXcQ"
-       data-title="Basic Chord Practice">
+       data-video="dQw4w9WgXcQ">
     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Guitar_1.jpg/640px-Guitar_1.jpg">
     <h3>Basic Chords</h3>
   </div>
 
 </div>
 
-<!-- SINGLE REUSABLE MODAL -->
+<!-- MODAL -->
 <div id="videoBox" class="video-box">
 
   <div class="video-content">
 
     <span class="close" onclick="closeVideo()">✖</span>
 
-    <iframe id="videoFrame" src="" frameborder="0"
+    <iframe id="videoFrame"
+      src=""
+      frameborder="0"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
       allowfullscreen>
     </iframe>
@@ -168,7 +182,7 @@ cards.forEach(card => {
 
 function closeVideo() {
   modal.style.display = "none";
-  frame.src = ""; // stops video
+  frame.src = "";
 }
 </script>
 
