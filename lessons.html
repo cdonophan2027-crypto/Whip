@@ -27,10 +27,40 @@
 
   .page-title {
     text-align: center;
-    padding: 50px 20px 10px;
+    padding: 30px 20px 10px;
     font-size: 42px;
   }
 
+  /* SEARCH + FILTER */
+  .controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+    flex-wrap: wrap;
+  }
+
+  .controls input {
+    width: 250px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+  }
+
+  .controls button {
+    padding: 10px 14px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background: #111;
+    color: white;
+  }
+
+  .controls button.active {
+    background: #444;
+  }
+
+  /* GRID */
   .lesson-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -38,40 +68,47 @@
     padding: 40px;
   }
 
-  /* ✅ 1:1 SQUARE CARDS */
   .lesson-card {
-    aspect-ratio: 1 / 1;
+    position: relative;
     background: white;
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     cursor: pointer;
     transition: 0.3s;
-
-    display: flex;
-    flex-direction: column;
   }
 
   .lesson-card:hover {
     transform: translateY(-6px);
   }
 
-  /* image fills top portion but stays square layout */
   .lesson-card img {
     width: 100%;
-    height: 70%;
+    aspect-ratio: 1 / 1;
     object-fit: cover;
+    display: block;
   }
 
   .lesson-card h3 {
     margin: 0;
-    padding: 10px;
+    padding: 12px;
     font-size: 16px;
     text-align: center;
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  }
+
+  /* ⭐ FAVORITE BUTTON */
+  .fav {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 20px;
+    cursor: pointer;
+    color: white;
+    text-shadow: 0 0 5px black;
+  }
+
+  .fav.active {
+    color: gold;
   }
 
   /* MODAL */
@@ -124,25 +161,29 @@
 
 <h1 class="page-title">Lessons</h1>
 
+<!-- CONTROLS -->
+<div class="controls">
+  <input id="searchInput" type="text" placeholder="Search lessons...">
+  <button id="showAllBtn" class="active">All</button>
+  <button id="showFavBtn">Favorites ⭐</button>
+</div>
+
 <div class="lesson-grid">
 
-  <!-- Nirvana -->
-  <div class="lesson-card"
-       data-video="hTWKbfoikeg">
+  <div class="lesson-card" data-video="hTWKbfoikeg" data-id="nirvana">
+    <div class="fav">☆</div>
     <img src="https://upload.wikimedia.org/wikipedia/en/b/b7/NirvanaNevermindalbumcover.jpg">
     <h3>Smells Like Teen Spirit</h3>
   </div>
 
-  <!-- Wonderwall (NEW COVER) -->
-  <div class="lesson-card"
-       data-video="q9jF1x1yYjg">
+  <div class="lesson-card" data-video="q9jF1x1yYjg" data-id="wonderwall">
+    <div class="fav">☆</div>
     <img src="https://upload.wikimedia.org/wikipedia/en/0/0d/Oasis_-_%28What%27s_the_Story%29_Morning_Glory_album_cover.jpg">
     <h3>Wonderwall</h3>
   </div>
 
-  <!-- Basic Chords (NEW COVER) -->
-  <div class="lesson-card"
-       data-video="dQw4w9WgXcQ">
+  <div class="lesson-card" data-video="dQw4w9WgXcQ" data-id="chords">
+    <div class="fav">☆</div>
     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Guitar_1.jpg/640px-Guitar_1.jpg">
     <h3>Basic Chords</h3>
   </div>
@@ -151,18 +192,13 @@
 
 <!-- MODAL -->
 <div id="videoBox" class="video-box">
-
   <div class="video-content">
-
     <span class="close" onclick="closeVideo()">✖</span>
 
-    <iframe id="videoFrame"
-      src=""
-      frameborder="0"
+    <iframe id="videoFrame" src="" frameborder="0"
       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
       allowfullscreen>
     </iframe>
-
   </div>
 </div>
 
@@ -170,20 +206,88 @@
 const cards = document.querySelectorAll(".lesson-card");
 const modal = document.getElementById("videoBox");
 const frame = document.getElementById("videoFrame");
+const searchInput = document.getElementById("searchInput");
+const showFavBtn = document.getElementById("showFavBtn");
+const showAllBtn = document.getElementById("showAllBtn");
 
+let favorites = JSON.parse(localStorage.getItem("favorites")) || {};
+let showFavoritesOnly = false;
+
+/* OPEN VIDEO */
 cards.forEach(card => {
-  card.addEventListener("click", () => {
-    const videoId = card.getAttribute("data-video");
+  card.addEventListener("click", (e) => {
+    if (e.target.classList.contains("fav")) return;
 
-    frame.src = "https://www.youtube.com/embed/" + videoId + "?autoplay=1";
+    frame.src = "https://www.youtube.com/embed/" + card.dataset.video + "?autoplay=1";
     modal.style.display = "flex";
   });
 });
 
+/* CLOSE */
 function closeVideo() {
   modal.style.display = "none";
   frame.src = "";
 }
+
+/* FAVORITES */
+document.querySelectorAll(".fav").forEach(fav => {
+  const card = fav.parentElement;
+  const id = card.dataset.id;
+
+  if (favorites[id]) {
+    fav.classList.add("active");
+    fav.textContent = "★";
+  }
+
+  fav.addEventListener("click", () => {
+    favorites[id] = !favorites[id];
+
+    if (favorites[id]) {
+      fav.classList.add("active");
+      fav.textContent = "★";
+    } else {
+      fav.classList.remove("active");
+      fav.textContent = "☆";
+    }
+
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+    filterCards();
+  });
+});
+
+/* SEARCH */
+searchInput.addEventListener("input", filterCards);
+
+/* FILTER SYSTEM */
+function filterCards() {
+  const search = searchInput.value.toLowerCase();
+
+  cards.forEach(card => {
+    const text = card.querySelector("h3").innerText.toLowerCase();
+    const id = card.dataset.id;
+    const isFav = favorites[id];
+
+    const matchSearch = text.includes(search);
+    const matchFav = !showFavoritesOnly || isFav;
+
+    card.style.display = (matchSearch && matchFav) ? "block" : "none";
+  });
+}
+
+/* FILTER BUTTONS */
+showFavBtn.addEventListener("click", () => {
+  showFavoritesOnly = true;
+  showFavBtn.classList.add("active");
+  showAllBtn.classList.remove("active");
+  filterCards();
+});
+
+showAllBtn.addEventListener("click", () => {
+  showFavoritesOnly = false;
+  showAllBtn.classList.add("active");
+  showFavBtn.classList.remove("active");
+  filterCards();
+});
 </script>
 
 </body>
