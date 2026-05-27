@@ -38,7 +38,7 @@
 
     .hero {
       height: 90vh;
-      background: linear-gradient(rgba(15,23,42,0.7), rgba(15,23,42,0.7)), <img src="images/bandphoto.jpg" alt="Band practicing"> center/cover no-repeat;
+      background: linear-gradient(rgba(15,23,42,0.7), rgba(15,23,42,0.7)), url("images/bandphoto.jpg") center/cover no-repeat;
       display: flex;
       justify-content: center;
       align-items: center;
