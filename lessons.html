@@ -232,8 +232,6 @@ nav a:hover{
 
 <body>
 
-<!-- HEADER -->
-
 <header>
 
   <div class="logo">Whip</div>
@@ -245,13 +243,9 @@ nav a:hover{
 
 </header>
 
-<!-- TITLE -->
-
 <h1 class="page-title">
   Guitar Lessons
 </h1>
-
-<!-- SEARCH -->
 
 <div class="controls">
 
@@ -262,8 +256,6 @@ nav a:hover{
   >
 
 </div>
-
-<!-- GRID -->
 
 <div class="lesson-grid">
 
@@ -278,8 +270,9 @@ nav a:hover{
     <div class="fav">☆</div>
 
     <img
+      loading="lazy"
       src="https://upload.wikimedia.org/wikipedia/en/b/b7/NirvanaNevermindalbumcover.jpg"
-      alt="Nirvana"
+      alt="Nirvana lesson"
     >
 
     <h3>Smells Like Teen Spirit - Nirvana</h3>
@@ -291,19 +284,158 @@ nav a:hover{
   <div
     class="lesson-card"
     data-video="o8wM8inaqmo"
-    data-id="wonderwall">
+    data-id="wonderwall"
+  >
+
     <div class="fav">☆</div>
-    <img src="images/wonderwall.jpg">
+
+    <img
+      loading="lazy"
+      src="https://upload.wikimedia.org/wikipedia/en/b/b1/Oasis_-_Wonderwall_cover.jpg"
+      alt="Wonderwall lesson"
+    >
+
     <h3>Wonderwall - Oasis</h3>
+
   </div>
+
+  <!-- CARD 3 -->
 
   <div
     class="lesson-card"
     data-video="BBz-Jyr23M4"
-    data-id="chords">
+    data-id="chords"
+  >
+
     <div class="fav">☆</div>
-    <img src="https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&w=800&q=80">
+
+    <img
+      loading="lazy"
+      src="https://images.unsplash.com/photo-1510915361894-db8b60106cb1?auto=format&fit=crop&w=800&q=80"
+      alt="Basic guitar chords"
+    >
+
     <h3>Basic Chords - Beginner Lessons</h3>
+
+  </div>
+
+  <!-- CARD 4 -->
+
+  <div
+    class="lesson-card"
+    data-video="fJ9rUzIMcZQ"
+    data-id="bohemian"
+  >
+
+    <div class="fav">☆</div>
+
+    <img
+      loading="lazy"
+      src="https://upload.wikimedia.org/wikipedia/en/9/9f/Bohemian_Rhapsody.png"
+      alt="Bohemian Rhapsody lesson"
+    >
+
+    <h3>Bohemian Rhapsody - Queen</h3>
+
+  </div>
+
+  <!-- CARD 5 -->
+
+  <div
+    class="lesson-card"
+    data-video="ktvTqknDobU"
+    data-id="radioactive"
+  >
+
+    <div class="fav">☆</div>
+
+    <img
+      loading="lazy"
+      src="https://upload.wikimedia.org/wikipedia/en/1/1b/Imagine_Dragons_-_Radioactive.jpg"
+      alt="Radioactive lesson"
+    >
+
+    <h3>Radioactive - Imagine Dragons</h3>
+
+  </div>
+
+  <!-- CARD 6 -->
+
+  <div
+    class="lesson-card"
+    data-video="YVkUvmDQ3HY"
+    data-id="sevennation"
+  >
+
+    <div class="fav">☆</div>
+
+    <img
+      loading="lazy"
+      src="https://upload.wikimedia.org/wikipedia/en/0/0f/SevenNationArmy.jpg"
+      alt="Seven Nation Army lesson"
+    >
+
+    <h3>Seven Nation Army - The White Stripes</h3>
+
+  </div>
+
+  <!-- CARD 7 -->
+
+  <div
+    class="lesson-card"
+    data-video="hTWKbfoikeg"
+    data-id="comeas"
+  >
+
+    <div class="fav">☆</div>
+
+    <img
+      loading="lazy"
+      src="https://upload.wikimedia.org/wikipedia/en/b/b7/NirvanaNevermindalbumcover.jpg"
+      alt="Come As You Are lesson"
+    >
+
+    <h3>Come As You Are - Nirvana</h3>
+
+  </div>
+
+  <!-- CARD 8 -->
+
+  <div
+    class="lesson-card"
+    data-video="kXYiU_JCYtU"
+    data-id="numb"
+  >
+
+    <div class="fav">☆</div>
+
+    <img
+      loading="lazy"
+      src="https://upload.wikimedia.org/wikipedia/en/3/3f/Linkin_Park_-_Meteora_album_cover.jpg"
+      alt="Numb lesson"
+    >
+
+    <h3>Numb - Linkin Park</h3>
+
+  </div>
+
+  <!-- CARD 9 -->
+
+  <div
+    class="lesson-card"
+    data-video="eBG7P-K-r1Y"
+    data-id="hotel"
+  >
+
+    <div class="fav">☆</div>
+
+    <img
+      loading="lazy"
+      src="https://upload.wikimedia.org/wikipedia/en/4/49/Hotelcalifornia.jpg"
+      alt="Hotel California lesson"
+    >
+
+    <h3>Hotel California - Eagles</h3>
 
   </div>
 
@@ -363,7 +495,7 @@ cards.forEach(card => {
     const videoId = card.dataset.video;
 
     frame.src =
-      `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+      `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1`;
 
     modal.style.display = "flex";
 
