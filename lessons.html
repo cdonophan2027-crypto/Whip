@@ -341,27 +341,16 @@ nav a:hover{
 
 /* ELEMENTS */
 
-const cards =
-document.querySelectorAll(".lesson-card");
-
-const modal =
-document.getElementById("videoBox");
-
-const frame =
-document.getElementById("videoFrame");
-
-const closeBtn =
-document.querySelector(".close");
-
-const searchInput =
-document.getElementById("searchInput");
+const cards = document.querySelectorAll(".lesson-card");
+const modal = document.getElementById("videoBox");
+const frame = document.getElementById("videoFrame");
+const closeBtn = document.querySelector(".close");
+const searchInput = document.getElementById("searchInput");
 
 /* FAVORITES */
 
 let favorites =
-JSON.parse(
-localStorage.getItem("favorites")
-) || {};
+JSON.parse(localStorage.getItem("favorites")) || {};
 
 /* OPEN VIDEO */
 
@@ -369,15 +358,12 @@ cards.forEach(card => {
 
   card.addEventListener("click", e => {
 
-    if(
-      e.target.classList.contains("fav")
-    ) return;
+    if (e.target.closest(".fav")) return;
 
-    const videoId =
-    card.dataset.video;
+    const videoId = card.dataset.video;
 
     frame.src =
-    `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+      `https://www.youtube.com/embed/${videoId}?autoplay=1`;
 
     modal.style.display = "flex";
 
@@ -387,26 +373,22 @@ cards.forEach(card => {
 
 /* CLOSE FUNCTION */
 
-function closeVideo(){
+function closeVideo() {
 
   modal.style.display = "none";
-
   frame.src = "";
 
 }
 
 /* CLOSE BUTTON */
 
-closeBtn.addEventListener(
-"click",
-closeVideo
-);
+closeBtn.addEventListener("click", closeVideo);
 
 /* CLICK OUTSIDE */
 
 modal.addEventListener("click", e => {
 
-  if(e.target === modal){
+  if (e.target === modal) {
     closeVideo();
   }
 
@@ -414,11 +396,9 @@ modal.addEventListener("click", e => {
 
 /* ESC KEY */
 
-document.addEventListener(
-"keydown",
-e => {
+document.addEventListener("keydown", e => {
 
-  if(e.key === "Escape"){
+  if (e.key === "Escape") {
     closeVideo();
   }
 
@@ -426,18 +406,14 @@ e => {
 
 /* FAVORITES */
 
-document.querySelectorAll(".fav")
-.forEach(fav => {
+document.querySelectorAll(".fav").forEach(fav => {
 
-  const card =
-  fav.parentElement;
-
-  const id =
-  card.dataset.id;
+  const card = fav.parentElement;
+  const id = card.dataset.id;
 
   /* LOAD SAVED */
 
-  if(favorites[id]){
+  if (favorites[id]) {
 
     fav.classList.add("active");
     fav.textContent = "★";
@@ -452,17 +428,10 @@ document.querySelectorAll(".fav")
 
     favorites[id] = !favorites[id];
 
-    if(favorites[id]){
+    fav.classList.toggle("active");
 
-      fav.classList.add("active");
-      fav.textContent = "★";
-
-    }else{
-
-      fav.classList.remove("active");
-      fav.textContent = "☆";
-
-    }
+    fav.textContent =
+      favorites[id] ? "★" : "☆";
 
     localStorage.setItem(
       "favorites",
@@ -475,24 +444,22 @@ document.querySelectorAll(".fav")
 
 /* SEARCH */
 
-searchInput.addEventListener(
-"input",
-() => {
+searchInput.addEventListener("input", () => {
 
   const value =
-  searchInput.value.toLowerCase();
+    searchInput.value.toLowerCase();
 
   cards.forEach(card => {
 
     const text =
-    card.querySelector("h3")
-    .innerText
-    .toLowerCase();
+      card.querySelector("h3")
+      .textContent
+      .toLowerCase();
 
     card.style.display =
-    text.includes(value)
-    ? ""
-    : "none";
+      text.includes(value)
+      ? ""
+      : "none";
 
   });
 
