@@ -459,6 +459,20 @@ const frame = document.getElementById("videoFrame");
 const closeBtn = document.querySelector(".close");
 const searchInput = document.getElementById("searchInput");
 
+/* RANDOM SONG ORDER */
+
+const lessonGrid =
+document.querySelector(".lesson-grid");
+
+const shuffledCards =
+Array.from(cards);
+
+shuffledCards.sort(() => Math.random() - 0.5);
+
+shuffledCards.forEach(card => {
+  lessonGrid.appendChild(card);
+});
+
 /* FAVORITES */
 
 let favorites =
